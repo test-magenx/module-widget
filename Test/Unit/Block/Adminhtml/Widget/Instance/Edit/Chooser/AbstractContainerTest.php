@@ -12,19 +12,15 @@ use Magento\Framework\App\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Escaper;
 use Magento\Framework\Event\Manager;
+use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use Magento\Framework\View\Layout\ProcessorFactory;
 use Magento\Framework\View\Model\Layout\Merge;
-use Magento\Framework\View\Model\PageLayout\Config\BuilderInterface as PageLayoutConfigBuilder;
-use Magento\Framework\View\PageLayout\Config as PageLayoutConfig;
 use Magento\Theme\Model\ResourceModel\Theme\Collection;
 use Magento\Theme\Model\ResourceModel\Theme\CollectionFactory;
 use Magento\Theme\Model\Theme;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 abstract class AbstractContainerTest extends TestCase
 {
     /**
@@ -73,15 +69,17 @@ abstract class AbstractContainerTest extends TestCase
     protected $escaperMock;
 
     /**
-     * @var PageLayoutConfigBuilder|MockObject
+     * @var ObjectManagerHelper
      */
-    protected $pageLayoutConfigBuilderMock;
+    protected $objectManagerHelper;
 
     /**
      * @return void
      */
     protected function setUp(): void
     {
+        $this->objectManagerHelper = new ObjectManagerHelper($this);
+
         $this->eventManagerMock = $this->getMockBuilder(Manager::class)
             ->setMethods(['dispatch'])
             ->disableOriginalConstructor()
@@ -118,7 +116,7 @@ abstract class AbstractContainerTest extends TestCase
             Escaper::class,
             ['escapeHtml', 'escapeHtmlAttr']
         );
-        $this->escaperMock->method('escapeHtmlAttr')->willReturnArgument(0);
+        $this->escaperMock->expects($this->any())->method('escapeHtmlAttr')->willReturnArgument(0);
 
         $this->contextMock = $this->getMockBuilder(Context::class)
             ->setMethods(['getEventManager', 'getScopeConfig', 'getEscaper'])
@@ -127,16 +125,5 @@ abstract class AbstractContainerTest extends TestCase
         $this->contextMock->expects($this->once())->method('getEventManager')->willReturn($this->eventManagerMock);
         $this->contextMock->expects($this->once())->method('getScopeConfig')->willReturn($this->scopeConfigMock);
         $this->contextMock->expects($this->once())->method('getEscaper')->willReturn($this->escaperMock);
-
-        $this->pageLayoutConfigBuilderMock = $this->getMockBuilder(PageLayoutConfigBuilder::class)
-            ->getMockForAbstractClass();
-        $pageLayoutConfigMock = $this->getMockBuilder(PageLayoutConfig::class)
-            ->onlyMethods(['getPageLayouts'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $pageLayoutConfigMock->method('getPageLayouts')
-            ->willReturn(['empty' => 'Empty']);
-        $this->pageLayoutConfigBuilderMock->method('getPageLayoutsConfig')
-            ->willReturn($pageLayoutConfigMock);
     }
 }

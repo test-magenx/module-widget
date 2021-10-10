@@ -32,10 +32,10 @@
             <deleteData createDataKey="createSimpleProduct" stepKey="deleteSimpleProduct"/>
         </after>
         <!-- Create a CMS page containing the Products List widget -->
-        <actionGroup ref="AdminOpenCMSPagesGridActionGroup" stepKey="amOnCmsList"/>
-        <comment userInput="Comment is added to preserve the step key for backward compatibility" stepKey="waitForCmsList"/>
+        <amOnPage url="{{CmsPagesPage.url}}" stepKey="amOnCmsList"/>
+        <waitForPageLoad stepKey="waitForCmsList"/>
         <conditionalClick selector="{{AdminDataGridHeaderSection.clearFilters}}" dependentSelector="{{AdminDataGridHeaderSection.clearFilters}}" visible="true" stepKey="clickClearFilters"/>
-        <actionGroup ref="AdminClickAddNewPageOnPagesGridActionGroup" stepKey="clickAddNewPageButton"/>
+        <click selector="{{CmsPagesPageActionsSection.addNewPageButton}}" stepKey="clickAddNewPageButton"/>
         <fillField selector="{{CmsNewPagePageBasicFieldsSection.pageTitle}}" userInput="{{_newDefaultCmsPage.title}}" stepKey="fillPageTitle"/>
         <click selector="{{CmsNewPagePageContentSection.header}}" stepKey="expandContentSection"/>
         <waitForPageLoad stepKey="waitForContentSection"/>
@@ -51,7 +51,7 @@
         <waitForAjaxLoad stepKey="waitForAjaxLoad"/>
         <click selector="{{AdminCategorySidebarTreeSection.categoryInTree($$createCategory.name$$)}}" stepKey="clickCategoryToEditInitial"/>
         <click selector="{{AdminNewWidgetSection.applyParameter}}" stepKey="clickApplyRuleParameter"/>
-        <actionGroup ref="AdminClickInsertWidgetActionGroup" stepKey="clickInsertWidget"/>
+        <click selector="{{WidgetSection.InsertWidget}}" stepKey="clickInsertWidget"/>
         <click selector="{{CmsNewPagePageActionsSection.expandSplitButton}}"  stepKey="expandSplitBtn"/>
         <click selector="{{CmsNewPagePageActionsSection.saveAndClose}}" stepKey="clickSaveAndClose"/>
         <waitForPageLoad stepKey="waitForCmsList2"/>

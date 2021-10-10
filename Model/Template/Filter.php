@@ -5,25 +5,6 @@
  */
 namespace Magento\Widget\Model\Template;
 
-use Magento\Email\Model\Template\Css;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\State;
-use Magento\Framework\Css\PreProcessor\Adapter\CssInliner;
-use Magento\Framework\Escaper;
-use Magento\Framework\Filesystem;
-use Magento\Framework\Filter\VariableResolverInterface;
-use Magento\Framework\Stdlib\StringUtils;
-use Magento\Framework\UrlInterface;
-use Magento\Framework\View\Asset\Repository;
-use Magento\Framework\View\LayoutFactory;
-use Magento\Framework\View\LayoutInterface;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Variable\Model\Source\Variables;
-use Magento\Variable\Model\VariableFactory;
-use Magento\Widget\Block\BlockInterface;
-use Magento\Widget\Model\Widget;
-use Psr\Log\LoggerInterface;
-
 /**
  * Template Filter Model
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -36,55 +17,44 @@ class Filter extends \Magento\Cms\Model\Template\Filter
     protected $_widgetResource;
 
     /**
-     * @var Widget
+     * @var \Magento\Widget\Model\Widget
      */
     protected $_widget;
 
     /**
-     * Filter constructor.
-     * @param StringUtils $string
-     * @param LoggerInterface $logger
-     * @param Escaper $escaper
-     * @param Repository $assetRepo
-     * @param ScopeConfigInterface $scopeConfig
-     * @param VariableFactory $coreVariableFactory
-     * @param StoreManagerInterface $storeManager
-     * @param LayoutInterface $layout
-     * @param LayoutFactory $layoutFactory
-     * @param State $appState
-     * @param UrlInterface $urlModel
-     * @param Variables $configVariables
-     * @param VariableResolverInterface $variableResolver
-     * @param Css\Processor $cssProcessor
-     * @param Filesystem $pubDirectory
-     * @param CssInliner $cssInliner
+     * @param \Magento\Framework\Stdlib\StringUtils $string
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Framework\Escaper $escaper
+     * @param \Magento\Framework\View\Asset\Repository $assetRepo
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Variable\Model\VariableFactory $coreVariableFactory
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Framework\View\LayoutInterface $layout
+     * @param \Magento\Framework\View\LayoutFactory $layoutFactory
+     * @param \Magento\Framework\App\State $appState
+     * @param \Magento\Framework\UrlInterface $urlModel
+     * @param \Pelago\Emogrifier $emogrifier
+     * @param \Magento\Variable\Model\Source\Variables $configVariables
      * @param \Magento\Widget\Model\ResourceModel\Widget $widgetResource
-     * @param Widget $widget
-     * @param array $variables
-     * @param array $directiveProcessors
+     * @param \Magento\Widget\Model\Widget $widget
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        StringUtils $string,
-        LoggerInterface $logger,
-        Escaper $escaper,
-        Repository $assetRepo,
-        ScopeConfigInterface $scopeConfig,
-        VariableFactory $coreVariableFactory,
-        StoreManagerInterface $storeManager,
-        LayoutInterface $layout,
-        LayoutFactory $layoutFactory,
-        State $appState,
-        UrlInterface $urlModel,
-        Variables $configVariables,
-        VariableResolverInterface $variableResolver,
-        Css\Processor $cssProcessor,
-        Filesystem $pubDirectory,
-        CssInliner $cssInliner,
+        \Magento\Framework\Stdlib\StringUtils $string,
+        \Psr\Log\LoggerInterface $logger,
+        \Magento\Framework\Escaper $escaper,
+        \Magento\Framework\View\Asset\Repository $assetRepo,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Variable\Model\VariableFactory $coreVariableFactory,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Framework\View\LayoutInterface $layout,
+        \Magento\Framework\View\LayoutFactory $layoutFactory,
+        \Magento\Framework\App\State $appState,
+        \Magento\Framework\UrlInterface $urlModel,
+        \Pelago\Emogrifier $emogrifier,
+        \Magento\Variable\Model\Source\Variables $configVariables,
         \Magento\Widget\Model\ResourceModel\Widget $widgetResource,
-        Widget $widget,
-        $variables = [],
-        array $directiveProcessors = []
+        \Magento\Widget\Model\Widget $widget
     ) {
         $this->_widgetResource = $widgetResource;
         $this->_widget = $widget;
@@ -100,13 +70,8 @@ class Filter extends \Magento\Cms\Model\Template\Filter
             $layoutFactory,
             $appState,
             $urlModel,
-            $configVariables,
-            $variableResolver,
-            $cssProcessor,
-            $pubDirectory,
-            $cssInliner,
-            $variables,
-            $directiveProcessors
+            $emogrifier,
+            $configVariables
         );
     }
 
@@ -149,7 +114,7 @@ class Filter extends \Magento\Cms\Model\Template\Filter
 
         // define widget block and check the type is instance of Widget Interface
         $widget = $this->_layout->createBlock($type, $name, ['data' => $params]);
-        if (!$widget instanceof BlockInterface) {
+        if (!$widget instanceof \Magento\Widget\Block\BlockInterface) {
             return '';
         }
 
@@ -175,9 +140,8 @@ class Filter extends \Magento\Cms\Model\Template\Filter
      */
     public function mediaDirective($construction)
     {
-        // phpcs:disable Magento2.Functions.DiscouragedFunction
         $params = $this->getParameters(html_entity_decode($construction[2], ENT_QUOTES));
         return $this->_storeManager->getStore()
-            ->getBaseUrl(UrlInterface::URL_TYPE_MEDIA) . $params['url'];
+            ->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . $params['url'];
     }
 }
