@@ -28,21 +28,18 @@
         <actionGroup ref="AdminAssertPageTitleActionGroup" stepKey="seePageTitleFirst">
             <argument name="title" value="{{AdminMenuContentElementsWidgets.pageTitle}}"/>
         </actionGroup>
-        <waitForPageLoad stepKey="waitForLoadingMaskToDisappear1"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappear1"/>
         <actionGroup ref="AdminCreateWidgetWthoutLayoutActionGroup" stepKey="addWidgetForTest">
             <argument name="widget" value="ProductsListWidget"/>
         </actionGroup>
         <actionGroup ref="AdminWidgetAddLayoutUpdateActionGroup" stepKey="AddSecondLayout"/>
-        <click selector="{{AdminNewWidgetSection.removeLastLayoutUpdate}}" stepKey="clickRemoveLastLayoutUpdate"/>
-        <seeNumberOfElements userInput="1" selector="{{AdminNewWidgetSection.layoutUpdate}}" stepKey="seeOneLayoutUpdate"/>
-        <actionGroup ref="AdminWidgetAddLayoutUpdateActionGroup" stepKey="AddSecondLayoutAgain"/>
         <actionGroup ref="AdminWidgetAddLayoutUpdateActionGroup" stepKey="AddThirdLayout"/>
         <seeNumberOfElements userInput="3" selector="{{AdminNewWidgetSection.CountDeleteButtons}}" stepKey="seeThreeDeleteButtons"/>
-        <actionGroup ref="AdminWidgetDeleteLayoutUpdateActionGroup" stepKey="DeleteFirstLayoutForWidget"/>
+        <actionGroup ref="AdminWidgetDeleteLayoutUpdateActionGroup" stepKey="DeleteFirstLayoutForWidget"></actionGroup>
         <seeNumberOfElements userInput="2" selector="{{AdminNewWidgetSection.CountDeleteButtons}}" stepKey="seeTwoDeleteButtons"/>
-        <actionGroup ref="AdminWidgetDeleteLayoutUpdateActionGroup" stepKey="DeleteSecondLayoutForWidget"/>
+        <actionGroup ref="AdminWidgetDeleteLayoutUpdateActionGroup" stepKey="DeleteSecondLayoutForWidget"></actionGroup>
         <seeNumberOfElements userInput="1" selector="{{AdminNewWidgetSection.CountDeleteButtons}}" stepKey="seeOneDeleteButtons"/>
-        <actionGroup ref="AdminWidgetDeleteLayoutUpdateActionGroup" stepKey="DeleteThirdLayoutForWidget"/>
+        <actionGroup ref="AdminWidgetDeleteLayoutUpdateActionGroup" stepKey="DeleteThirdLayoutForWidget"></actionGroup>
         <seeNumberOfElements userInput="0" selector="{{AdminNewWidgetSection.CountDeleteButtons}}" stepKey="seeZeroDeleteButtons"/>
     </test>
 </tests>
