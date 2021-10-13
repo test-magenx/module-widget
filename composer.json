@@ -1,5 +1,5 @@
 {
-    "name": "test-magenx/module-widget",
+    "name": "magenxcommerce/module-widget",
     "description": "N/A",
     "config": {
         "sort-packages": true
